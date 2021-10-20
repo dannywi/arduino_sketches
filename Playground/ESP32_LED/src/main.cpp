@@ -13,7 +13,7 @@ void loop() {
   Serial.println(counter++);
   if (counter == 255)
     counter = 0;
-  
+
   digitalWrite(LED, HIGH);
   delay(1500);
   digitalWrite(LED, LOW);
