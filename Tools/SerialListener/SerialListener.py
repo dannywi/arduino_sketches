@@ -1,11 +1,13 @@
 import serial
 import argparse
 import re
+import os
+import time
 
 def printRaw(port, baud):
   ser = serial.Serial(
-    port='/dev/tty.usbserial-0001',
-    baudrate=9600,
+    port=port,
+    baudrate=baud,
   )
 
   while True:
@@ -13,6 +15,7 @@ def printRaw(port, baud):
     if data:
       str = data.decode('unicode_escape').strip("\r").strip("\n")
       print(str)
+      #os.system('clear')
 
 if __name__ == '__main__':
 
@@ -29,4 +32,4 @@ if __name__ == '__main__':
   if args.baud:
     baud = args.baud
 
-  printRaw(args.port, baud)
+  printRaw(port=args.port, baud=baud)
