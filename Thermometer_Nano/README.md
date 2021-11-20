@@ -1,7 +1,8 @@
 # Arduino Nano Thermometer
 * Prints current temperature and humidity on OLED display, plus the 24 hours min/max temperature.
-* Couldn't do min/max on humidity due to memory constraint (OLED's library took 1K). Even for the temperature I needed to cut the resolution to half hour buckets to save memory. 
-* If the program uses too much memory, the DHT11 library fails to read the sensors (had to keep it under 1.6K RAM for this)
+* If the program uses too much memory, the DHT11 library fails to read the sensors (had to keep it under empirical limit of 1630 bytes)
+* Couldn't do min/max on humidity due to that memory constraint (OLED's library took 1K). Even for the temperature I needed to use short int (instead of float) in half hour buckets to save memory.
+* Also I couldn't use more values for the running average as it would hit the memory ceiling. Try reducing this if you see memory problems in your enviroment.
 
 ![image](media/thermometer.jpg)
 

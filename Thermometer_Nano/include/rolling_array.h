@@ -43,6 +43,17 @@ struct rolling_array {
     }
     return max;
   }
+
+  T get_avg() const {
+    T acc = T{0};
+    T cnt = T{0};
+    for (size_t i = 0; i < SLOT; ++i) {
+      if (vals[i] == T{0}) continue;
+      acc = acc + vals[i];
+      cnt = cnt + 1;
+    }
+    return cnt == T{0} ? T{0} : T{acc / cnt};
+  }
 };
 
 template<
