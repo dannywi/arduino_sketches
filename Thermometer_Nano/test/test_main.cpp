@@ -24,10 +24,8 @@ void test_less_than() {
 
 void test_rolling_array() {
   rolling_array<float, 5> ra;
-  TEST_ASSERT_EQUAL(true, ra.empty());
 
   ra.insert(1);
-  TEST_ASSERT_EQUAL(false, ra.empty());
   ra.insert(2);
   ra.insert(3);
   TEST_ASSERT_EQUAL(2, ra.get_avg());
