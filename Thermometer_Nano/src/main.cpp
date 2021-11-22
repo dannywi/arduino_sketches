@@ -53,14 +53,15 @@ void loop() {
     l1 += " c:" + String(isnan(raw_c));
   } else {
     arr_h.insert(raw_h);
-    arr_c.insert(raw_c);
     float h = arr_h.get_avg();
+
+    arr_c.insert(raw_c);
     float c = arr_c.get_avg();
 
-    // allow deviation up to 3 degrees
-    float dev = 3;
-    if (minmax.empty() || (c >= minmax.get_min() - dev && c <= minmax.get_max() - dev))
+    float dev_c = 5;
+    if (minmax.empty() || (c >= minmax.get_min() - dev_c && c <= minmax.get_max() + dev_c)) {
       minmax.add_val(tm, c);
+    }
 
     float c_min = minmax.get_min();
     float c_max = minmax.get_max();

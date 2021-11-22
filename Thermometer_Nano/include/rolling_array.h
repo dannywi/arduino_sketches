@@ -88,7 +88,7 @@ public:
     }
   }
 
-  bool empty() const { return slot_min_ == T{0}; }
+  bool empty() const { return get_min() == T{0}; }
 private:
   constexpr static TM_T SLOT_SEC = DAY_SEC / INTERVAL_SEC;
   rolling_array<T, SLOT_SEC> array_day_min_, array_day_max_;
