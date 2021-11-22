@@ -1,14 +1,19 @@
 #ifndef ROLLING_ARRAY_H
 #define ROLLING_ARRAY_H
 
-template<typename T>
-bool less_than(T a, T b) {
+template<typename T, typename F>
+T comp_non_zero(T a, T b, F f) {
   if (a == T{0})
     return b;
   if (b == T{0})
     return a;
-  return a < b;
+  return f(a, b);
 }
+
+template<typename T>
+T lesser(T a, T b) { return comp_non_zero(a, b, [](T a, T b) { return a < b ? a : b; }); };
+template<typename T>
+T bigger(T a, T b) { return comp_non_zero(a, b, [](T a, T b) { return a > b ? a : b; }); };
 
 template<typename T, size_t SLOT>
 struct rolling_array {
@@ -29,8 +34,7 @@ struct rolling_array {
   T get_min() const {
     T min = T{0};
     for (size_t i = 0; i < SLOT; ++i) {
-      if (less_than(vals[i], min))
-        min = vals[i];
+      min = lesser(min, vals[i]);
     }
     return min;
   }
@@ -38,8 +42,7 @@ struct rolling_array {
   T get_max() const {
     T max = T{0};
     for (size_t i = 0; i < SLOT; ++i) {
-      if (less_than(max, vals[i]))
-        max = vals[i];
+      max = bigger(max, vals[i]);
     }
     return max;
   }
@@ -66,34 +69,28 @@ class rolling_minmax {
 public:
   T get_max() const {
     T arr_max = array_day_max_.get_max();
-    if (less_than(arr_max, slot_max_))
-      return slot_max_;
-    return arr_max;
+    return bigger(arr_max, slot_max_);
   }
 
   T get_min() const {
     T arr_min = array_day_min_.get_min();
-    if (less_than(slot_min_, arr_min))
-      return slot_min_;
-    return arr_min;
+    return lesser(arr_min, slot_min_);
   }
 
   void add_val(TM_T tm, T val) {
-    if (tm - prev_slot_update_ > tm * 1000) {
+    slot_min_ = lesser(val, slot_min_);
+    slot_max_ = bigger(val, slot_max_);
+    if (tm - prev_slot_update_ > INTERVAL_SEC * 1000) {
       array_day_min_.insert(slot_min_);
       array_day_max_.insert(slot_max_);
       slot_min_ = slot_max_ = 0;
       prev_slot_update_ = tm;      
-    } else {
-      if (less_than(val, slot_min_))
-        slot_min_ = val;
-      if (less_than(slot_max_, val))
-        slot_max_ = val;
     }
   }
 
+  bool empty() const { return slot_min_ == T{0}; }
 private:
-  constexpr static TM_T SLOT_SEC = 86400 / INTERVAL_SEC;
+  constexpr static TM_T SLOT_SEC = DAY_SEC / INTERVAL_SEC;
   rolling_array<T, SLOT_SEC> array_day_min_, array_day_max_;
   TM_T prev_slot_update_ = 0;
   T slot_min_ = T{0};

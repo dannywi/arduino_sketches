@@ -16,7 +16,7 @@ DHT dht(DHTPIN, DHT11, 6);
 U8G2_SSD1306_128X32_UNIVISION_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE);
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
  
   dht.begin();
 
@@ -57,12 +57,11 @@ void loop() {
     float h = arr_h.get_avg();
     float c = arr_c.get_avg();
 
-    Serial.print("DEBUG ... c raw ");
-    Serial.print(raw_c);
-    Serial.print(" avg ");
-    Serial.println(c);
+    // allow deviation up to 3 degrees
+    float dev = 3;
+    if (minmax.empty() || (c >= minmax.get_min() - dev && c <= minmax.get_max() - dev))
+      minmax.add_val(tm, c);
 
-    minmax.add_val(tm, c);
     float c_min = minmax.get_min();
     float c_max = minmax.get_max();
   
