@@ -92,7 +92,6 @@ void test_short_float() {
   TEST_ASSERT_EQUAL(true, a > b);
   TEST_ASSERT_EQUAL(true, a == a);
   TEST_ASSERT_EQUAL(true, b < a);
-
 }
 
 void setup() {
