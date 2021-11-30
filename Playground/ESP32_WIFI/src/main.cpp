@@ -1,6 +1,8 @@
 #include <Arduino.h>
-#include <WiFi.h>
+#include "WiFi.h"
+//#include "BluetoothSerial.h"
 #include "time.h"
+// #include "RTClib.h"
 
 #define LED_FREQ        5000
 #define LED_CHANNEL     0
@@ -9,6 +11,8 @@
 
 #define DHTTYPE DHT11
 #define DHTPIN 19
+
+//BluetoothSerial SerialBT;
 
 void setup() {
   Serial.begin(9600);
@@ -19,6 +23,8 @@ void setup() {
   WiFi.disconnect();
   delay(3000);
 
+  //SerialBT.begin("ESP32");
+  
   Serial.println("Setup done");
 }
 
@@ -96,5 +102,37 @@ void loop() {
   Serial.println(cnt);
   cnt = cnt == 255 ? 0 : cnt + 1;
 
-  printLocalTime();
+//   //printLocalTime();
+//   char c = 'a';
+//   char buf[128];
+//   if (SerialBT.available()) {
+//     c = SerialBT.read();
+//     if(c == 'C' || c == 'G') {
+//       DateTime goal("2022-01-01 01:01:01");
+//       DateTime curr("2022-01-01 01:01:01");
+//       int pos = 0;
+//       buf[pos++] = c;
+//       bool process = false;
+//       while(pos < 24) {
+//         c = SerialBT.read();
+//         if(c == 'E') {
+//           break;
+//         }
+//         buf[pos++] = c;
+//         delay(100);
+//       }
+//       buf[pos] = '\0';
+//       Serial.println(buf);
+//       String s(buf);
+//       Serial.println(s);
+//     }
+// //C 2023 23 23 11 23 32 E
+//     if(c == 'E') {
+//       Serial.println("ENDING!");
+//     }
+//   } else {
+//     Serial.write(c);
+//   }
+//   SerialBT.print("Hello World - ");
+//   SerialBT.println(cnt + c);
 }

@@ -3,6 +3,7 @@ import argparse
 import re
 import os
 import time
+from datetime import datetime
 
 def printRaw(port, baud):
   ser = serial.Serial(
@@ -14,7 +15,8 @@ def printRaw(port, baud):
     data = ser.readline()
     if data:
       str = data.decode('unicode_escape').strip("\r").strip("\n")
-      print(str)
+      tm = datetime.now().time()
+      print("{} {}".format(tm, str))
       #os.system('clear')
 
 if __name__ == '__main__':
