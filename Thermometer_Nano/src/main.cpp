@@ -121,7 +121,7 @@ void display_loop() {
   u8g2.setFont(u8g2_font_6x12_tf);
   u8g2.drawStr(70, 10, (String("t:") + String(tm / (3600 * 1000.0), 2) + String("h")).c_str());
   u8g2.drawStr(70, 20, (String(c_min, 1) + String("-") + String(c_max, 1)).c_str());
-  u8g2.drawStr(0, 30, (String("Humidity: ") + String(c, 1) + String(" %")).c_str());
+  u8g2.drawStr(0, 30, (String("Humidity: ") + String(h, 1) + String(" %")).c_str());
   u8g2.sendBuffer();
 }
 #endif // DISPLAY_V2
